@@ -1,0 +1,61 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+- name: Veracode Static Analysis Pipeline Scan and SARIF import
+  # You may pin to the exact commit or the version.
+  # uses: veracode/veracode-pipeline-scan-results-to-sarif@c4e3ac33a116df4b7074d53747d8814e8fdf974b
+  uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
+  with:
+    # location of the pipeline json result file
+    pipeline-results-json: # default is results.json
+    # the path to the SARIF file as an output of the transformation
+    output-results-sarif: # default is veracode-results.sarif
+    # a path prefix conversion before publish in the SARIF file
+    source-base-path-1: # optional, default is 
+    # a path prefix conversion before publish in the SARIF file
+    source-base-path-2: # optional, default is 
+    # a path prefix conversion before publish in the SARIF file
+    source-base-path-3: # optional, default is 
+    # The conversion rule of Veracode findings to GitHub level
+    finding-rule-level: # default is 4:3:0
+    - name: Add Secure Code Warrior contextual training to SARIF
+  # You may pin to the exact commit or the version.
+  # uses: SecureCodeWarrior/github-action-add-sarif-contextual-training@a8fbd41b9f8dd53b7c1ed68fb22c4e367ac936c3
+  uses: SecureCodeWarrior/github-action-add-sarif-contextual-training@v1.02
+  with:
+    # Relative location of SARIF file to process
+    inputSarifFile: # default is ./findings.sarif
+    # Relative destination location for processed SARIF file
+    outputSarifFile: # default is ./findings.processed.sarif
+    # Provide `secrets.GITHUB_TOKEN` to use the GitHub access token automatically supplied by GitHub Workflows
+    githubToken: # optional
